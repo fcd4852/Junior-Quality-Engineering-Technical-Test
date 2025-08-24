@@ -1,0 +1,391 @@
+{
+	"info": {
+		"_postman_id": "96a9eac3-798b-4507-8c7f-1d23dddc23be",
+		"name": "Task 2 - Petstore API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47650466",
+		"_collection_link": "https://sithlordvader93-2113735.postman.co/workspace/Paul's-Workspace~5c58df17-5cbb-4f14-85cd-596fe46d23c3/collection/47650466-96a9eac3-798b-4507-8c7f-1d23dddc23be?action=share&source=collection_link&creator=47650466"
+	},
+	"item": [
+		{
+			"name": "Positive Tests",
+			"item": [
+				{
+					"name": "Create Pet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**",
+									" * Checks that the HTTP response status code is 200 (OK).",
+									" * Indicates that the creation request was successful.",
+									" */",
+									"pm.test('Status is 200 on create', function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"/**",
+									" * Gets Content-Type header from the response.",
+									" * Ensures the server responded with JSON-formatted data.",
+									" */",
+									"",
+									"pm.test('Content-Type is JSON', function () {",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+									"});",
+									"",
+									"/**",
+									" * Attempts to parse the response body as JSON.",
+									" * If it fails it won’t crash. Variable will be set to an empty object.",
+									" */",
+									"var json = {};",
+									"try { json = pm.response.json(); } catch(e) {}",
+									"",
+									"//Check that the fields are present",
+									"pm.test('Response has id, name, status', function () {",
+									"  pm.expect(json).to.have.property('id');",
+									"  pm.expect(json).to.have.property('name');",
+									"  pm.expect(json).to.have.property('status');",
+									"});",
+									"",
+									"//Checks that the name returned in the response matches the petName stored in the environment.",
+									"pm.test('Name matches request variable', function () {",
+									"  pm.expect(json.name).to.eql(pm.environment.get('petName'));",
+									"});",
+									"",
+									"// Persist the server-returned id in case backend overwrote our client id",
+									"if (json && json.id) { pm.environment.set('petId', json.id); }"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": {{petId}},\n  \"name\": \"{{petName}}\",\n  \"status\": \"available\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/pet",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Pet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*",
+									"Checks that the HTTP response status code is 200 (OK).",
+									"Indicates that the GET request was successful.",
+									"*/",
+									"pm.test('Status is 200 on get', function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"var json = {}; try { json = pm.response.json(); } catch(e) {}",
+									"",
+									"//checks that the id in the response body matches the one stored in Petstore environment",
+									"pm.test('ID matches environment', function () {",
+									"  pm.expect(json.id).to.eql(parseInt(pm.environment.get('petId')));",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pet/{{petId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet",
+								"{{petId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Pet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status is 200 on update', function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"var json = {}; try { json = pm.response.json(); } catch(e) {}",
+									"pm.test('Status updated to sold', function () {",
+									"  pm.expect(json.status).to.eql('sold');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/pet",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Pet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// Some servers return 200 on delete; Petstore does this. We'll assert 200.",
+									"pm.test('Status is 200 on delete', function () {",
+									"  pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pet/{{petId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet",
+								"{{petId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Deletion",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**",
+									" * Check the HTTP response status code is 404.",
+									" * Test passes if the status code is 404 (Not Found)",
+									" */",
+									"pm.test('Status is 404 after deletion', function () {",
+									"  pm.expect([404]).to.include(pm.response.code);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pet/{{petId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet",
+								"{{petId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Negative Tests",
+			"item": [
+				{
+					"name": "Get Nonexistent Pet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Not found (404)', function () {",
+									"  pm.expect([404, 400]).to.include(pm.response.code);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pet/{{invalidPetId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet",
+								"{{invalidPetId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Pet with invalid JSON",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**",
+									" * Verifies that the HTTP response status code is one of these error codes",
+									" * 400 - Bad Request invalid syntax",
+									" * 405 - HTTP methods not allowed for the endpoint",
+									" */",
+									"pm.test('Expect client error on invalid JSON', function () {",
+									"  pm.expect([400, 405]).to.include(pm.response.code);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ invalid_json: true"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/pet",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Pet with empty body",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Expect method/validation error', function () {",
+									"  pm.expect([400, 405, 415]).to.include(pm.response.code);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/pet",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Collection-level pre-request: ensure dynamic data exists for this run",
+					"if (!pm.environment.get('petId')) {",
+					"  pm.environment.set('petId', Math.floor(100000 + Math.random() * 900000));",
+					"}",
+					"if (!pm.environment.get('petName')) {",
+					"  pm.environment.set('petName', 'Pet_' + Date.now());",
+					"}",
+					"// An ID that should not exist, used for negative tests",
+					"pm.environment.set('invalidPetId', Math.floor(900000000 + Math.random() * 900000000));"
+				]
+			}
+		}
+	]
+}
