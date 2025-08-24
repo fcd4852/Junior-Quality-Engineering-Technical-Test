@@ -41,8 +41,8 @@ The goal of this assessment was to demonstrate test design, coverage strategy, a
 - Negative tests (invalid IDs, missing fields)  
 
 ### Running the Tests (Postman)  
-1. Import `postman_collection.json` into Postman  
-2. Import `postman_environment.json` into Postman  
+1. Import `Petstore API.postman_collection.json` into Postman  
+2. Import `Petstore Environment.postman_environment.json` into Postman  
 3. Select the environment and run the collection in the Postman Collection Runner  
 
 ---
@@ -51,5 +51,6 @@ The goal of this assessment was to demonstrate test design, coverage strategy, a
 
 This repo demonstrates a **balanced approach**:  
 - **Task 1**: Clear, descriptive test cases and coverage analysis for the UI  
-- **Task 2**: Automated, maintainable integration tests for the Pet Store API  
+- **Task 2**: Maintainable integration tests for the Pet Store API  
 - Focused on **efficiency, clarity, and maintainability**
+
