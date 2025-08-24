@@ -12,12 +12,6 @@ The goal of this assessment was to demonstrate test design, coverage strategy, a
 
 ## Task 1 – Pet Store UI Testing  
 
-### Deliverables  
-- **petstore testcases 01.xlsx** – Detailed test cases (functional, negative, boundary, non-functional)  
-- **coverage matrix.xlsx** – Mapping of test cases to testing levels & types  
-- **acceptance tests.md** – End-to-end acceptance tests in *Given / When / Then* format  
-- **conclusion.md** – Strategy summary, coverage explanation, and next steps  
-
 ### Testing Levels Covered  
 - **Integration** – Login, cart operations, browsing  
 - **System** – Registration, checkout, order history  
@@ -27,11 +21,6 @@ The goal of this assessment was to demonstrate test design, coverage strategy, a
 ---
 
 ## Task 2 – Pet Store API / Integration Testing  
-
-### Deliverables  
-- **postman collection.json** – Postman collection with integration tests for `/pet` endpoint  
-- **postman environment.json** – Configurable variables (base URL, pet IDs)  
-- **conclusion.md** – Test structure explanation and maintainability considerations  
 
 ### Key API Test Coverage  
 - Create a pet (POST)  
@@ -53,4 +42,3 @@ This repo demonstrates a **balanced approach**:
 - **Task 1**: Clear, descriptive test cases and coverage analysis for the UI  
 - **Task 2**: Maintainable integration tests for the Pet Store API  
 - Focused on **efficiency, clarity, and maintainability**
-
